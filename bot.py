@@ -1,41 +1,46 @@
 import requests
 import re
 
-# Kanal isimleri ve sayfa linkleri
+# Kanallar ve kaynaklar
 kanallar = {
     "Haberturk": "https://tv.canlitvvolo.com/haberturk-tv-hd-izlee/",
     "ShowTV": "https://tv.canlitvvolo.com/show-tv-hd-izlee/",
-    "BloombergHT": "https://tv.canlitvvolo.com/bloomberg-ht-izle-hd/",
-    "Halk TV": "https://tv.canlitvvolo.com/halk-tv-hd-izle-canli/"
+    "Halk TV (YouTube)": "https://www.youtube.com/watch?v=fXvI-MvL-fI",
+    "TRT Haber (Resmi)": "https://tv-trthaber.live.trt.com.tr/master.m3u8"
 }
 
-def linki_yakala(url):
-    # Siteyi "Ben gerçek bir kullanıcıyım" diye kandırmak için başlıklar
+def linki_yakala(name, url):
+    # Eğer link zaten m3u8 ise direkt döndür (TRT örneği gibi)
+    if ".m3u8" in url:
+        return url
+        
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Referer': 'https://tv.canlitvvolo.com/'
+        'Accept': '*/*',
+        'Referer': 'https://google.com'
     }
+    
     try:
-        response = requests.get(url, headers=headers, timeout=15)
-        # Daha gelişmiş bir arama yöntemi (farklı tırnak tiplerini de kapsar)
-        match = re.search(r'(https?://[^\s"\']+\.m3u8)', response.text)
+        # YouTube için özel kontrol (Basit yöntem)
+        if "youtube.com" in url:
+            return url # YouTube linkini direkt listeye ekle, player'lar genelde çözer
+            
+        response = requests.get(url, headers=headers, timeout=20)
+        # Sitenin içindeki gizli m3u8 linkini daha geniş bir taramayla ara
+        match = re.search(r'(https?://[^\s"\'<>]+(?:\.m3u8)[^\s"\'<>]*|https?://[^\s"\'<>]+playlist[^\s"\'<>]*|https?://[^\s"\'<>]+stream[^\s"\'<>]*)', response.text)
+        
         if match:
-            return match.group(0)
-    except Exception as e:
-        print(f"Hata oluştu: {e}")
+            return match.group(0).replace("\\/", "/")
+    except:
         return None
     return None
 
-# M3U Dosyasını Oluşturma
+# M3U Dosyası Oluşturma
 with open("canli_tv_listem.m3u", "w", encoding="utf-8") as f:
     f.write("#EXTM3U\n")
     for isim, adres in kanallar.items():
-        yayin_linki = linki_yakala(adres)
-        if yayin_linki:
-            f.write(f"#EXTINF:-1,{isim}\n{yayin_linki}\n")
-            print(f"Başarılı: {isim}")
-        else:
-            # Eğer link bulunamazsa, sistemin çalıştığını anlaman için bir uyarı ekler
-            print(f"Link bulunamadı: {isim}")
+        yayin = linki_yakala(isim, adres)
+        if yayin:
+            f.write(f"#EXTINF:-1,{isim}\n{yayin}\n")
 
-print("Dosya başarıyla güncellendi!")
+print("İşlem tamam!")
