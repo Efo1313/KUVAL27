@@ -17,7 +17,7 @@ jobs:
         run: pip install requests
       - name: Botu Calistir
         run: python bot.py
-              - name: Sunucu Tarayiciyi Calistir
+      - name: Sunucu Tarayiciyi Calistir
         run: python tarayici.py
 
       - name: Listeyi Kaydet
