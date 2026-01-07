@@ -1,47 +1,219 @@
 #EXTM3U
-#EXTINF:-1 tvg-id="A2TV.tr@SD" tvg-logo="https://iatv.tmgrup.com.tr/site/v2/a2tv/i/a2tv-logo.png" group-title="General",A2TV
-https://trkvz-live.daioncdn.net/a2tv/a2tv.m3u8
-#EXTINF:-1 tvg-id="AlZahraTVTurkic.tr@SD" tvg-logo="https://i.imgur.com/QEHKGnG.png" group-title="Religious",Al-Zahra TV Turkic (720p) [Not 24/7]
-https://live.al-zahratv.com/live/playlist.m3u8
-#EXTINF:-1 tvg-id="AlanyaPostaTV.tr@SD" tvg-logo="https://i.imgur.com/a3w9eFe.png" group-title="General",Alanya Posta TV (1080p)
-https://api-tv3.yayin.com.tr/postatv/postatv/playlist.m3u8
-#EXTINF:-1 tvg-id="ATV.tr@SD" tvg-logo="https://i.imgur.com/HyVUwFC.png" group-title="General",ATV (360p)
-http://rnttwmjcin.turknet.ercdn.net/lcpmvefbyo/atv/atv_360p.m3u8
-#EXTINF:-1 tvg-id="ATVAlanya.tr@SD" tvg-logo="https://i.imgur.com/bUwarR0.png" group-title="General",ATV Alanya (720p) [Not 24/7]
-http://stream2.taksimbilisim.com:1935/alanyatv/alanyatv.smil/playlist.m3u8
-#EXTINF:-1 tvg-id="ATVAvrupa.tr@SD" tvg-logo="https://i.postimg.cc/Ghdyjjy8/atvavrupa.png" group-title="Undefined",ATV Avrupa (576p) [Not 24/7]
-https://streamer2.nexgen.bz/ATV/index.m3u8
-#EXTINF:-1 tvg-id="BloombergHT.tr@SD" tvg-logo="https://i.imgur.com/bmkXfIE.png" group-title="Business",Bloomberg HT (720p) [Not 24/7]
-https://tv.ensonhaber.com/bloomberght/bloomberght.m3u8
-#EXTINF:-1 tvg-id="BursaTV.tr@SD" tvg-logo="https://i.imgur.com/9cl1MR8.png" group-title="Undefined",Bursa TV (720p) [Not 24/7]
-https://cdn-bursatv.yayin.com.tr/bursatv/bursatv/playlist.m3u8
-#EXTINF:-1 tvg-id="DehaTV.tr@SD" tvg-logo="https://i.postimg.cc/qRKB3gXX/dehatv.png" group-title="News",Deha TV (720p) [Geo-blocked]
-https://live.artidijitalmedya.com/artidijital_dehatv/dehatv/playlist.m3u8
-#EXTINF:-1 tvg-id="EdessaTV.tr@SD" tvg-logo="https://i.postimg.cc/8CmgQWHY/edessatv.png" group-title="Entertainment",Edessa TV (720p)
-https://tv.digitalbox.xyz:19360/edessatv/edessatv.m3u8
-#EXTINF:-1 tvg-id="FortunaTV.tr@SD" tvg-logo="https://i.imgur.com/ZbUSlOC.png" group-title="Lifestyle",Fortuna TV
-https://edge1.socialsmart.tv/ftvturk/bant1/playlist.m3u8
-#EXTINF:-1 tvg-id="GoncaTV.tr@SD" tvg-logo="https://i.imgur.com/TwqIJwo.png" group-title="General",Gonca TV (720p)
-https://edge1.socialsmart.tv/goncatv/bant1/playlist.m3u8
-#EXTINF:-1 tvg-id="HaberturkTV.tr@SD" tvg-logo="https://i.imgur.com/6Tw3rUp.png" group-title="News",Habertürk TV (1080p)
-https://ciner-live.daioncdn.net/haberturktv/haberturktv.m3u8
-#EXTINF:-1 tvg-id="HelwaTV.tr@SD" tvg-logo="" group-title="Undefined",Helwa TV (1080p)
-https://raw.githubusercontent.com/ipstreet312/freeiptv/master/ressources/dzflix/helwa.m3u8
-#EXTINF:-1 tvg-id="KanalD.tr@SD" tvg-logo="https://i.imgur.com/9o1atM6.png" group-title="General",Kanal D (1080p)
-https://demiroren.daioncdn.net/kanald/kanald.m3u8?app=kanald_web&ce=3
-#EXTINF:-1 tvg-id="OnMedyaTV.tr@SD" tvg-logo="https://i.imgur.com/thvk3Py.png" group-title="News",ON Medya Haber (720p) [Geo-blocked]
-http://live.arkumedia.com:1935/marmaratv/marmaratv/playlist.m3u8
-#EXTINF:-1 tvg-id="ShowTV.tr@SD" tvg-logo="https://i.imgur.com/1l7SCCu.png" group-title="Undefined",Show TV (1080p)
-https://ciner-live.daioncdn.net/showtv/showtv.m3u8
-#EXTINF:-1 tvg-id="StarTV.tr@SD" tvg-logo="https://i.imgur.com/9O3DHRB.png" group-title="Undefined",Star TV (720p) [Not 24/7]
-https://dogus-live.daioncdn.net/startv/startv.m3u8
-#EXTINF:-1 tvg-id="TRT1.tr@SD" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/TRT_1_logo_%282021-%29.svg/512px-TRT_1_logo_%282021-%29.svg.png" group-title="Undefined",TRT 1 (1080p)
-https://trt.daioncdn.net/trt-1/master.m3u8?app=web
-#EXTINF:-1 tvg-id="TRTHaber.tr@SD" tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/TRT_Haber_Eyl%C3%BCl_2020_Logo.svg/512px-TRT_Haber_Eyl%C3%BCl_2020_Logo.svg.png" group-title="News",TRT Haber (720p)
-https://tv-trthaber.medya.trt.com.tr/master.m3u8
-#EXTINF:-1 tvg-id="TV8.tr@SD" tvg-logo="https://upload.wikimedia.org/wikipedia/tr/thumb/6/68/Tv8_Yeni_Logo.png/300px-Tv8_Yeni_Logo.png" group-title="Undefined",TV 8 (1080p) [Not 24/7]
-https://tv8-live.daioncdn.net/tv8/tv8.m3u8
-#EXTINF:-1 tvg-id="TV85.tr@SD" tvg-logo="https://i.postimg.cc/wTmRt7yw/tv85.png" group-title="Undefined",TV 8.5 (720p)
-http://bozztv.com/gin-dvrfl05/gin-tv8_5/index.m3u8
-#EXTINF:-1,Halk TV (YouTube)
-https://www.youtube.com/watch?v=fXvI-MvL-fI
+#EXTINF:-1,24Tv
+http://5.178.103.239:82/yt1/s/24tv.m3u8
+#EXTINF:-1,80Ler
+http://5.178.103.239:82/yt1/s/80ler.m3u8
+#EXTINF:-1,Battlebots
+http://5.178.103.239:82/yt1/s/BATTLEBOTS.m3u8
+#EXTINF:-1,Beautiful Relaxing
+http://5.178.103.239:82/yt1/s/Beautiful_Relaxing.m3u8
+#EXTINF:-1,Bloomberg
+http://5.178.103.239:82/yt1/s/Bloomberg.m3u8
+#EXTINF:-1,Catcondocamera
+http://5.178.103.239:82/yt1/s/CatCondoCamera.m3u8
+#EXTINF:-1,Cyberpunk
+http://5.178.103.239:82/yt1/s/Cyberpunk.m3u8
+#EXTINF:-1,Deepspace
+http://5.178.103.239:82/yt1/s/DeepSpace.m3u8
+#EXTINF:-1,Furki   Tv
+http://5.178.103.239:82/yt1/s/Furki___TV.m3u8
+#EXTINF:-1,Kaplan Daniel
+http://5.178.103.239:82/yt1/s/Kaplan_Daniel.m3u8
+#EXTINF:-1,Looloo Kids
+http://5.178.103.239:82/yt1/s/LooLoo_Kids.m3u8
+#EXTINF:-1,Namibia
+http://5.178.103.239:82/yt1/s/Namibia.m3u8
+#EXTINF:-1,Natgeo
+http://5.178.103.239:82/yt1/s/NatGeo.m3u8
+#EXTINF:-1,Natgeoanimals
+http://5.178.103.239:82/yt1/s/NatGeoAnimals.m3u8
+#EXTINF:-1,Romanticballads
+http://5.178.103.239:82/yt1/s/RomanticBallads.m3u8
+#EXTINF:-1,Samurai
+http://5.178.103.239:82/yt1/s/Samurai.m3u8
+#EXTINF:-1,Twirlywoos
+http://5.178.103.239:82/yt1/s/Twirlywoos.m3u8
+#EXTINF:-1,Afrilayaban
+http://5.178.103.239:82/yt1/s/afrilayaban.m3u8
+#EXTINF:-1,Ahaber
+http://5.178.103.239:82/yt1/s/ahaber.m3u8
+#EXTINF:-1,Akustikturkuler
+http://5.178.103.239:82/yt1/s/akustikturkuler.m3u8
+#EXTINF:-1,Alleminkrali
+http://5.178.103.239:82/yt1/s/alleminkrali.m3u8
+#EXTINF:-1,Anews
+http://5.178.103.239:82/yt1/s/anews.m3u8
+#EXTINF:-1,Antikmisir
+http://5.178.103.239:82/yt1/s/antikmisir.m3u8
+#EXTINF:-1,Apara
+http://5.178.103.239:82/yt1/s/apara.m3u8
+#EXTINF:-1,Arkadasim
+http://5.178.103.239:82/yt1/s/arkadasim.m3u8
+#EXTINF:-1,Asianlofiradio
+http://5.178.103.239:82/yt1/s/asianlofiradio.m3u8
+#EXTINF:-1,Askimemnu
+http://5.178.103.239:82/yt1/s/askimemnu.m3u8
+#EXTINF:-1,Askineva
+http://5.178.103.239:82/yt1/s/askineva.m3u8
+#EXTINF:-1,Aspor
+http://5.178.103.239:82/yt1/s/aspor.m3u8
+#EXTINF:-1,Avrupayakasi
+http://5.178.103.239:82/yt1/s/avrupayakasi.m3u8
+#EXTINF:-1,Behsatc
+http://5.178.103.239:82/yt1/s/behsatc.m3u8
+#EXTINF:-1,Beinspor
+http://5.178.103.239:82/yt1/s/beinspor.m3u8
+#EXTINF:-1,Birgecemasali
+http://5.178.103.239:82/yt1/s/birgecemasali.m3u8
+#EXTINF:-1,Bizimev
+http://5.178.103.239:82/yt1/s/bizimev.m3u8
+#EXTINF:-1,Bizimkiler
+http://5.178.103.239:82/yt1/s/bizimkiler.m3u8
+#EXTINF:-1,Cennetmh
+http://5.178.103.239:82/yt1/s/cennetmh.m3u8
+#EXTINF:-1,Cicektaksi
+http://5.178.103.239:82/yt1/s/cicektaksi.m3u8
+#EXTINF:-1,Cifcitv
+http://5.178.103.239:82/yt1/s/cifcitv.m3u8
+#EXTINF:-1,Cnnturk
+http://5.178.103.239:82/yt1/s/cnnturk.m3u8
+#EXTINF:-1,Dertfm
+http://5.178.103.239:82/yt1/s/dertfm.m3u8
+#EXTINF:-1,Diyanettv
+http://5.178.103.239:82/yt1/s/diyanettv.m3u8
+#EXTINF:-1,Ekoturk
+http://5.178.103.239:82/yt1/s/ekoturk.m3u8
+#EXTINF:-1,Emretkomutanim
+http://5.178.103.239:82/yt1/s/emretkomutanim.m3u8
+#EXTINF:-1,Eskiyadhol
+http://5.178.103.239:82/yt1/s/eskiyadhol.m3u8
+#EXTINF:-1,Fonmuzik1
+http://5.178.103.239:82/yt1/s/fonmuzik1.m3u8
+#EXTINF:-1,Gezdolas
+http://5.178.103.239:82/yt1/s/gezdolas.m3u8
+#EXTINF:-1,Gonuldagi
+http://5.178.103.239:82/yt1/s/gonuldagi.m3u8
+#EXTINF:-1,Goodliferadio
+http://5.178.103.239:82/yt1/s/goodliferadio.m3u8
+#EXTINF:-1,Gooftroop
+http://5.178.103.239:82/yt1/s/gooftroop.m3u8
+#EXTINF:-1,Guldurguldur
+http://5.178.103.239:82/yt1/s/guldurguldur.m3u8
+#EXTINF:-1,Haberglobal
+http://5.178.103.239:82/yt1/s/haberglobal.m3u8
+#EXTINF:-1,Haberturk
+http://5.178.103.239:82/yt1/s/haberturk.m3u8
+#EXTINF:-1,Halktv
+http://5.178.103.239:82/yt1/s/halktv.m3u8
+#EXTINF:-1,Happyholideys
+http://5.178.103.239:82/yt1/s/happyholideys.m3u8
+#EXTINF:-1,Htspor
+http://5.178.103.239:82/yt1/s/htspor.m3u8
+#EXTINF:-1,Istanbulmuhafizlari
+http://5.178.103.239:82/yt1/s/istanbulmuhafizlari.m3u8
+#EXTINF:-1,Karadenizakustik
+http://5.178.103.239:82/yt1/s/karadenizakustik.m3u8
+#EXTINF:-1,Kardeslerim
+http://5.178.103.239:82/yt1/s/kardeslerim.m3u8
+#EXTINF:-1,Kemalsunal
+http://5.178.103.239:82/yt1/s/kemalsunal.m3u8
+#EXTINF:-1,Kemalsunal1
+http://5.178.103.239:82/yt1/s/kemalsunal1.m3u8
+#EXTINF:-1,Kemalsunal2
+http://5.178.103.239:82/yt1/s/kemalsunal2.m3u8
+#EXTINF:-1,Kemalsunal3
+http://5.178.103.239:82/yt1/s/kemalsunal3.m3u8
+#EXTINF:-1,Kenya
+http://5.178.103.239:82/yt1/s/kenya.m3u8
+#EXTINF:-1,Korku
+http://5.178.103.239:82/yt1/s/korku.m3u8
+#EXTINF:-1,Kosem
+http://5.178.103.239:82/yt1/s/kosem.m3u8
+#EXTINF:-1,Kralsakir
+http://5.178.103.239:82/yt1/s/kralsakir.m3u8
+#EXTINF:-1,Krttv
+http://5.178.103.239:82/yt1/s/krttv.m3u8
+#EXTINF:-1,Kserberi
+http://5.178.103.239:82/yt1/s/kserberi.m3u8
+#EXTINF:-1,Kukulli
+http://5.178.103.239:82/yt1/s/kukulli.m3u8
+#EXTINF:-1,Kurulusosman
+http://5.178.103.239:82/yt1/s/kurulusosman.m3u8
+#EXTINF:-1,Leylamecnun
+http://5.178.103.239:82/yt1/s/leylamecnun.m3u8
+#EXTINF:-1,Medcezir
+http://5.178.103.239:82/yt1/s/medcezir.m3u8
+#EXTINF:-1,Mehmed
+http://5.178.103.239:82/yt1/s/mehmed.m3u8
+#EXTINF:-1,Mrbean
+http://5.178.103.239:82/yt1/s/mrbean.m3u8
+#EXTINF:-1,Muhtesemyuzyil
+http://5.178.103.239:82/yt1/s/muhtesemyuzyil.m3u8
+#EXTINF:-1,Naturelturkce
+http://5.178.103.239:82/yt1/s/naturelturkce.m3u8
+#EXTINF:-1,Neselidunyam
+http://5.178.103.239:82/yt1/s/neselidunyam.m3u8
+#EXTINF:-1,Niloya
+http://5.178.103.239:82/yt1/s/niloya.m3u8
+#EXTINF:-1,Ntv
+http://5.178.103.239:82/yt1/s/ntv.m3u8
+#EXTINF:-1,Panda
+http://5.178.103.239:82/yt1/s/panda.m3u8
+#EXTINF:-1,Radyodram
+http://5.178.103.239:82/yt1/s/radyodram.m3u8
+#EXTINF:-1,Rafadantayfa
+http://5.178.103.239:82/yt1/s/rafadantayfa.m3u8
+#EXTINF:-1,Sakaryafirat
+http://5.178.103.239:82/yt1/s/sakaryafirat.m3u8
+#EXTINF:-1,Selena
+http://5.178.103.239:82/yt1/s/selena.m3u8
+#EXTINF:-1,Sinco
+http://5.178.103.239:82/yt1/s/sinco.m3u8
+#EXTINF:-1,Sozcutv
+http://5.178.103.239:82/yt1/s/sozcutv.m3u8
+#EXTINF:-1,Taffilm
+http://5.178.103.239:82/yt1/s/taffilm.m3u8
+#EXTINF:-1,Taytv
+http://5.178.103.239:82/yt1/s/taytv.m3u8
+#EXTINF:-1,Tgrtbelgesel
+http://5.178.103.239:82/yt1/s/tgrtbelgesel.m3u8
+#EXTINF:-1,Tgrthaber
+http://5.178.103.239:82/yt1/s/tgrthaber.m3u8
+#EXTINF:-1,Tjk
+http://5.178.103.239:82/yt1/s/tjk.m3u8
+#EXTINF:-1,Tolgashow
+http://5.178.103.239:82/yt1/s/tolgashow.m3u8
+#EXTINF:-1,Tomjerry
+http://5.178.103.239:82/yt1/s/tomjerry.m3u8
+#EXTINF:-1,Tomjery
+http://5.178.103.239:82/yt1/s/tomjery.m3u8
+#EXTINF:-1,Topfunny
+http://5.178.103.239:82/yt1/s/topfunny.m3u8
+#EXTINF:-1,Trasnformers
+http://5.178.103.239:82/yt1/s/trasnformers.m3u8
+#EXTINF:-1,Trthaber
+http://5.178.103.239:82/yt1/s/trthaber.m3u8
+#EXTINF:-1,Tv8
+http://5.178.103.239:82/yt1/s/tv8.m3u8
+#EXTINF:-1,Ugurbocegi
+http://5.178.103.239:82/yt1/s/ugurbocegi.m3u8
+#EXTINF:-1,Ulusal
+http://5.178.103.239:82/yt1/s/ulusal.m3u8
+#EXTINF:-1,Vavtv
+http://5.178.103.239:82/yt1/s/vavtv.m3u8
+#EXTINF:-1,Yabanhayat
+http://5.178.103.239:82/yt1/s/yabanhayat.m3u8
+#EXTINF:-1,Yalandunya
+http://5.178.103.239:82/yt1/s/yalandunya.m3u8
+#EXTINF:-1,Yaprakdokumu
+http://5.178.103.239:82/yt1/s/yaprakdokumu.m3u8
+#EXTINF:-1,Yedinumara
+http://5.178.103.239:82/yt1/s/yedinumara.m3u8
+#EXTINF:-1,Yesilcam
+http://5.178.103.239:82/yt1/s/yesilcam.m3u8
+#EXTINF:-1,Yesildeniz
+http://5.178.103.239:82/yt1/s/yesildeniz.m3u8
+#EXTINF:-1,Zekimetin
+http://5.178.103.239:82/yt1/s/zekimetin.m3u8
+#EXTINF:-1,Zenginkizfakiroglan
+http://5.178.103.239:82/yt1/s/zenginkizfakiroglan.m3u8
