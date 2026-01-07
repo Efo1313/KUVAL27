@@ -17,6 +17,9 @@ jobs:
         run: pip install requests
       - name: Botu Calistir
         run: python bot.py
+              - name: Sunucu Tarayiciyi Calistir
+        run: python tarayici.py
+
       - name: Listeyi Kaydet
         run: |
           git config --global user.name 'GitHub Bot'
