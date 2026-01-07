@@ -1,38 +1,33 @@
 import requests
+import re
 
-def kanal_listesini_hazirla():
-    # Dünya çapındaki güvenilir IPTV veritabanı (Türkiye kanalları)
-    kaynak_url = "https://iptv-org.github.io/iptv/countries/tr.m3u"
-    
-    # Senin listene eklemek istediğin özel kanalların isimleri
-    istenen_kanallar = ["Haberturk", "Show TV", "ATV", "Star TV", "Kanal D", "FOX", "TV8", "TRT 1", "TRT Haber", "A Haber", "Bloomberg HT"]
+def liste_olustur():
+    base_url = "http://5.178.103.239:82/yt1/s/"
+    yeni_liste = ["#EXTM3U\n"]
     
     try:
-        response = requests.get(kaynak_url, timeout=20)
-        satirlar = response.text.split('\n')
+        # Sunucu dizinine bağlanıp içindeki dosyaları tarıyoruz
+        response = requests.get(base_url, timeout=15)
+        # Sayfa içindeki .m3u8 ile biten tüm linkleri yakalıyoruz
+        dosyalar = re.findall(r'href="([^"]+\.m3u8)"', response.text)
         
-        yeni_liste = ["#EXTM3U\n"]
-        
-        # Veritabanını tara ve istediğimiz kanalları bul
-        for i in range(len(satirlar)):
-            if "#EXTINF" in satirlar[i]:
-                for kanal in istenen_kanallar:
-                    if kanal.lower() in satirlar[i].lower():
-                        yeni_liste.append(satirlar[i] + "\n") # Kanal bilgisi
-                        yeni_liste.append(satirlar[i+1] + "\n") # Yayın linki
-                        break
-        
-        # YouTube yedeğini de manuel ekleyelim
-        yeni_liste.append("#EXTINF:-1,Halk TV (YouTube)\nhttps://www.youtube.com/watch?v=fXvI-MvL-fI\n")
-
-        # Dosyayı kaydet
-        with open("canli_tv_listem.m3u", "w", encoding="utf-8") as f:
-            f.writelines(yeni_liste)
-            
-        print("Liste dev veritabanından başarıyla güncellendi!")
+        if dosyalar:
+            for dosya in dosyalar:
+                # Dosya adını kanal ismi yapalım (örn: kemalsunal1.m3u8 -> Kemal Sunal 1)
+                kanal_adi = dosya.replace(".m3u8", "").replace("_", " ").title()
+                tam_link = base_url + dosya
+                yeni_liste.append(f"#EXTINF:-1,{kanal_adi}\n{tam_link}\n")
+            print(f"{len(dosyalar)} adet kanal bulundu ve eklendi.")
+        else:
+            # Eğer tarama başarısız olursa manuel ekleme yapalım
+            yeni_liste.append(f"#EXTINF:-1,Kemal Sunal 1\n{base_url}kemalsunal1.m3u8\n")
 
     except Exception as e:
-        print(f"Hata: {e}")
+        print(f"Sunucu taranırken hata oluştu: {e}")
+
+    # Dosyayı Kaydet
+    with open("canli_tv_listem.m3u", "w", encoding="utf-8") as f:
+        f.writelines(yeni_liste)
 
 if __name__ == "__main__":
-    kanal_listesini_hazirla()
+    liste_olustur()
