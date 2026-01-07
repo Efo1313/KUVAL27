@@ -1,29 +1,35 @@
 name: Linkleri Guncelle
+
 on:
   schedule:
-    - cron: '0 * * * *' # Her saat başı çalışır
-  workflow_dispatch: # Elle başlatma butonu
+    - cron: '0 * * * *' # Her saat başı otomatik çalışır
+  workflow_dispatch: # Manuel çalıştırma butonu açar
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Python Kur
-        uses: actions/setup-python@v2
+      - name: Depoyu Kontrol Et
+        uses: actions/checkout@v3
+
+      - name: Python Kurulumu
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
-      - name: Modulleri Yukle
+          python-version: '3.9'
+
+      - name: Gerekli Kutuphaneleri Kur
         run: pip install requests
-      - name: Botu Calistir
+
+      - name: Ana Botu Calistir
         run: python bot.py
+
       - name: Sunucu Tarayiciyi Calistir
         run: python tarayici.py
 
-      - name: Listeyi Kaydet
+      - name: Degisiklikleri Kaydet ve Yukle
         run: |
           git config --global user.name 'GitHub Bot'
           git config --global user.email 'bot@github.com'
-          git add *.m3u
-          git commit -m "Otomatik guncelleme" || exit 0
+          git add .
+          git commit -m "Otomatik guncelleme: $(date)" || exit 0
           git push
