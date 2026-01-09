@@ -30,10 +30,7 @@ def liste_olustur():
 
     # Sildiğin dosyaları BURADA isim olarak belirtiyoruz ki bot onları geri getirsin
     hedef_dosyalar = [
-        "Ozel_sunucu.m3u",
-        "canli_tv_listem.m3u",
-        "tam_kanal_listesi.m3u",
-        "guncel_kanallarim.m3u"
+        "Ozel_sunucu.m3u"
     ]
 
     for dosya_adi in hedef_dosyalar:
