@@ -6,28 +6,40 @@ def liste_olustur():
     yeni_liste = ["#EXTM3U\n"]
     
     try:
-        # Sunucu dizinine bağlanıp içindeki dosyaları tarıyoruz
+        # Sunucuyu tara
         response = requests.get(base_url, timeout=15)
-        # Sayfa içindeki .m3u8 ile biten tüm linkleri yakalıyoruz
         dosyalar = re.findall(r'href="([^"]+\.m3u8)"', response.text)
         
-        if dosyalar:
-            for dosya in dosyalar:
-                # Dosya adını kanal ismi yapalım (örn: kemalsunal1.m3u8 -> Kemal Sunal 1)
-                kanal_adi = dosya.replace(".m3u8", "").replace("_", " ").title()
-                tam_link = base_url + dosya
-                yeni_liste.append(f"#EXTINF:-1,{kanal_adi}\n{tam_link}\n")
-            print(f"{len(dosyalar)} adet kanal bulundu ve eklendi.")
-        else:
-            # Eğer tarama başarısız olursa manuel ekleme yapalım
-            yeni_liste.append(f"#EXTINF:-1,Kemal Sunal 1\n{base_url}kemalsunal1.m3u8\n")
+        # Alfabetik sırala ve temizle
+        benzersiz_dosyalar = sorted(list(set(dosyalar)))
+        
+        for dosya in benzersiz_dosyalar:
+            # Geçici dosyaları atla
+            if ".tmp" in dosya or ".." in dosya:
+                continue
+            
+            # Kanal adını senin istediğin formatta yap (Baş harfler büyük)
+            kanal_adi = dosya.replace(".m3u8", "").replace("_", " ").title()
+            tam_link = base_url + dosya
+            yeni_liste.append(f"#EXTINF:-1,{kanal_adi}\n{tam_link}\n")
+            
+        print(f"{len(yeni_liste)-1} kanal listeye eklendi.")
 
     except Exception as e:
-        print(f"Sunucu taranırken hata oluştu: {e}")
+        print(f"Hata: {e}")
 
-    # Dosyayı Kaydet
-    with open("ozel_sunucu.m3u", "w", encoding="utf-8") as f:
-        f.writelines(yeni_liste)
+    # Sildiğin dosyaları BURADA isim olarak belirtiyoruz ki bot onları geri getirsin
+    hedef_dosyalar = [
+        "Ozel_sunucu.m3u",
+        "canli_tv_listem.m3u",
+        "tam_kanal_listesi.m3u",
+        "guncel_kanallarim.m3u"
+    ]
+
+    for dosya_adi in hedef_dosyalar:
+        with open(dosya_adi, "w", encoding="utf-8") as f:
+            f.writelines(yeni_liste)
+        print(f"Oluşturuldu: {dosya_adi}")
 
 if __name__ == "__main__":
     liste_olustur()
