@@ -26,7 +26,7 @@ def liste_olustur():
         print(f"Sunucu taranırken hata oluştu: {e}")
 
     # Dosyayı Kaydet
-    with open("canli_tv_listem.m3u", "w", encoding="utf-8") as f:
+    with open("ozel_sunucu.m3u", "w", encoding="utf-8") as f:
         f.writelines(yeni_liste)
 
 if __name__ == "__main__":
