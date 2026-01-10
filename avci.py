@@ -1,47 +1,43 @@
 import requests
 
-# AV SAHASI (Senin verdiğin iki ana merkez)
+# SUNUCULAR
 SUNUCULAR = [
     "http://65.108.239.207/",
     "http://116.202.238.88/"
 ]
 
-# AV POTANSİYELİ (Bu isimleri ve varyasyonlarını tarayacak)
-AD_TASLAKLARI = [
-    "bsstars", "bsaction", "bspremier", "box", "tarihtv", "viasathistory", "discovery",
-    "TRT1_TR", "SHOWTV_TR", "ATV_TR", "TV8_TR", "FOXTV_TR", "TRTHABER_TR", "CNNTURK_TR",
-    "KANALD_TR", "STAR_TR", "TV8.5_TR", "BELGESEL", "SPOR", "SINEMA"
+# GENİŞLETİLMİŞ TÜRK KANALLARI VE DİĞERLERİ
+KANALLAR = [
+    "TRT1_TR", "SHOWTV_TR", "ATV_TR", "TV8_TR", "FOXTV_TR", "NOW_TR", 
+    "STAR_TR", "KANALD_TR", "TV8.5_TR", "TRTHABER_TR", "HABERTURK_TR", 
+    "CNNTURK_TR", "A_HABER_TR", "TGRTHABER_TR", "Kanal7_TR", "ULKE_TR",
+    "natgeo", "natgeowild", "national", "bbc", "bbcearth",
+    "box1", "box2", "box3", "bsstars", "bsaction1", "bspremier1", 
+    "viasathistory", "tarihtv", "discovery", "discovery2"
 ]
 
-def tum_kanallari_cikar():
-    bulunan_ganimetler = []
-    print("🦅 Avcı sunucuların içine sızıyor, tüm kanallar çıkartılıyor...")
+def avla():
+    ganimetler = []
+    print("🦅 Avci taramaya basladi...")
 
     for sunucu in SUNUCULAR:
-        for taslak in AD_TASLAKLARI:
-            # Hem normal ismini hem de sonuna 1, 2, 3 ekleyerek dene
-            for i in range(1, 5):
-                suffix = "" if i == 1 else str(i)
-                # Bazı sunucular direkt ismi kullanır, bazıları sonuna numara ekler
-                test_adlari = [f"{taslak}{suffix}", f"{taslak.replace('_TR', '')}{suffix}_TR"]
-                
-                for kanal_adi in set(test_adlari):
-                    url = f"{sunucu}{kanal_adi}/index.m3u8"
-                    try:
-                        # Zaman aşımını kısa tutuyoruz ki hızlı tarasın
-                        r = requests.head(url, timeout=1.5)
-                        if r.status_code == 200:
-                            print(f"🎯 Kanal Çıkartıldı: {url}")
-                            bulunan_ganimetler.append(f"#EXTINF:-1, 🦅 AVCI | {kanal_adi}\n{url}")
-                            break # Bu taslak için bir tane bulduysa diğer rakama geçebilir
-                    except:
-                        continue
+        for kanal in KANALLAR:
+            url = f"{sunucu}{kanal}/index.m3u8"
+            try:
+                r = requests.head(url, timeout=3, allow_redirects=True)
+                if r.status_code == 200:
+                    # İsim temizleme: _TR'yi kaldır ve büyük harf yap
+                    temiz_isim = kanal.replace("_TR", "").upper()
+                    ganimetler.append(f"#EXTINF:-1, {temiz_isim}\n{url}")
+                    print(f"🎯 Bulundu: {temiz_isim}")
+            except:
+                continue
 
-    # Dosyaya Yazma
+    # Listeyi oluştur
     with open("avci_listesi.m3u", "w", encoding="utf-8") as f:
-        f.write("#EXTM3U\n" + "\n".join(bulunan_ganimetler))
+        f.write("#EXTM3U\n" + "\n".join(ganimetler))
     
-    print(f"\n✅ İşlem Tamam! Toplam {len(bulunan_ganimetler)} kanal gün yüzüne çıkarıldı.")
+    print(f"✅ Islem tamamlandi. {len(ganimetler)} kanal kaydedildi.")
 
 if __name__ == "__main__":
-    tum_kanallari_cikar()
+    avla()
