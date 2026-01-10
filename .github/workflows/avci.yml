@@ -1,0 +1,24 @@
+name: Avci Derleyici
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # İstediğin zaman manuel 'Ava Çık' butonu
+
+jobs:
+  derleme-zamani:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: setup-python@v4
+        with:
+          python-version: '3.9'
+      - run: pip install requests
+      - run: python avci.py
+      - name: Ganimetleri Depoya İşle
+        run: |
+          git config --global user.name 'Avci Bot'
+          git config --global user.email 'avci@bot.com'
+          git add avci_listesi.m3u
+          git commit -m "🦅 Yeni kanallar sökülüp alındı" || echo "Yeni kanal yok"
+          git push
