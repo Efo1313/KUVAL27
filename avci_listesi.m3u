@@ -1,0 +1,29 @@
+#EXTM3U
+#EXTINF:-1, 🦅 AVCI | bsstars
+http://65.108.239.207/bsstars/index.m3u8
+#EXTINF:-1, 🦅 AVCI | box2
+http://65.108.239.207/box2/index.m3u8
+#EXTINF:-1, 🦅 AVCI | box3
+http://65.108.239.207/box3/index.m3u8
+#EXTINF:-1, 🦅 AVCI | tarihtv
+http://65.108.239.207/tarihtv/index.m3u8
+#EXTINF:-1, 🦅 AVCI | viasathistory
+http://65.108.239.207/viasathistory/index.m3u8
+#EXTINF:-1, 🦅 AVCI | discovery
+http://65.108.239.207/discovery/index.m3u8
+#EXTINF:-1, 🦅 AVCI | TRT1_TR
+http://116.202.238.88/TRT1_TR/index.m3u8
+#EXTINF:-1, 🦅 AVCI | SHOWTV_TR
+http://116.202.238.88/SHOWTV_TR/index.m3u8
+#EXTINF:-1, 🦅 AVCI | ATV_TR
+http://116.202.238.88/ATV_TR/index.m3u8
+#EXTINF:-1, 🦅 AVCI | TV8_TR
+http://116.202.238.88/TV8_TR/index.m3u8
+#EXTINF:-1, 🦅 AVCI | FOXTV_TR
+http://116.202.238.88/FOXTV_TR/index.m3u8
+#EXTINF:-1, 🦅 AVCI | CNNTURK_TR
+http://116.202.238.88/CNNTURK_TR/index.m3u8
+#EXTINF:-1, 🦅 AVCI | KANALD_TR
+http://116.202.238.88/KANALD_TR/index.m3u8
+#EXTINF:-1, 🦅 AVCI | TV8.5_TR
+http://116.202.238.88/TV8.5_TR/index.m3u8
