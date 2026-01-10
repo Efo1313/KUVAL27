@@ -1,24 +1,38 @@
-name: Avci Derleyici
+name: 🦅 Avci Operasyonu
 
+# 1. TETİKLEYİCİLER (Avcı ne zaman ava çıksın?)
 on:
+  schedule:
+    - cron: '0 */6 * * *' # Her 6 saatte bir otomatik kontrol eder
   push:
-    branches: [ main ]
-  workflow_dispatch: # İstediğin zaman manuel 'Ava Çık' butonu
+    branches: [ main ]    # Sen kodda bir şey değiştirirsen çalışır
+  workflow_dispatch:      # GitHub üzerinden "Ava Çık" butonu ekler
 
+# 2. OPERASYON ORTAMI
 jobs:
-  derleme-zamani:
-    runs-on: ubuntu-latest
+  av-zamani:
+    runs-on: ubuntu-latest # Linux tabanlı hızlı bir sunucuda çalışır
+
+    # 3. ADIM ADIM OPERASYON BİLEŞENLERİ
     steps:
-      - uses: actions/checkout@v3
-      - uses: setup-python@v4
+      - name: 📂 Depoyu Kontrol Et
+        uses: actions/checkout@v3
+
+      - name: 🐍 Python Sistemini Hazırla
+        uses: setup-python@v4
         with:
           python-version: '3.9'
-      - run: pip install requests
-      - run: python avci.py
-      - name: Ganimetleri Depoya İşle
+
+      - name: 📦 Gerekli Araçları Kur (Requests)
+        run: pip install requests
+
+      - name: 🏹 Avcıyı Sahaya Gönder (avci.py)
+        run: python avci.py
+
+      - name: 🏆 Ganimetleri Kaydet ve Paylaş
         run: |
-          git config --global user.name 'Avci Bot'
+          git config --global user.name 'Avci-Bot'
           git config --global user.email 'avci@bot.com'
           git add avci_listesi.m3u
-          git commit -m "🦅 Yeni kanallar sökülüp alındı" || echo "Yeni kanal yok"
+          git commit -m "🦅 Ganimetler Güncellendi: $(date +'%d-%m-%Y %H:%M')" || echo "Yeni ganimet yok."
           git push
