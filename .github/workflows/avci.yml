@@ -1,35 +1,33 @@
 name: 🦅 Avci Operasyonu
 
-# 1. TETİKLEYİCİLER (Avcı ne zaman ava çıksın?)
 on:
   schedule:
-    - cron: '0 */6 * * *' # Her 6 saatte bir otomatik kontrol eder
+    - cron: '0 */6 * * *'
   push:
-    branches: [ main ]    # Sen kodda bir şey değiştirirsen çalışır
-  workflow_dispatch:      # GitHub üzerinden "Ava Çık" butonu ekler
+    branches: [ main ]
+  workflow_dispatch:
 
-# 2. OPERASYON ORTAMI
 jobs:
   av-zamani:
-    runs-on: ubuntu-latest # Linux tabanlı hızlı bir sunucuda çalışır
+    runs-on: ubuntu-latest
 
-    # 3. ADIM ADIM OPERASYON BİLEŞENLERİ
     steps:
       - name: 📂 Depoyu Kontrol Et
         uses: actions/checkout@v3
 
       - name: 🐍 Python Sistemini Hazırla
-        uses: setup-python@v4
+        # HATA BURADAYDI: Başına 'actions/' eklendi
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
-      - name: 📦 Gerekli Araçları Kur (Requests)
+      - name: 📦 Gerekli Araçları Kur
         run: pip install requests
 
-      - name: 🏹 Avcıyı Sahaya Gönder (avci.py)
+      - name: 🏹 Avcıyı Sahaya Gönder
         run: python avci.py
 
-      - name: 🏆 Ganimetleri Kaydet ve Paylaş
+      - name: 🏆 Ganimetleri Kaydet
         run: |
           git config --global user.name 'Avci-Bot'
           git config --global user.email 'avci@bot.com'
