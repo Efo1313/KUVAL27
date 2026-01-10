@@ -1,1 +1,28 @@
+name: Ulusal Kanallari Guncelle
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 * * * *'
+
+jobs:
+  islem:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - run: pip install requests
+      - name: Calistir
+        run: python tarayici.py
+      - name: Kaydet
+        run: |
+          git config --global user.name 'GitHub Bot'
+          git config --global user.email 'bot@github.com'
+          git add Tarayici.m3u
+          git commit -m "Tarayici.m3u güncellendi" || exit 0
+          git push
 
