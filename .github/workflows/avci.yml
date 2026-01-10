@@ -1,8 +1,8 @@
-name: 🦅 Avci Operasyonu
+name: Avci Otomasyonu
 
 on:
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 */6 * * *' # 6 saatte bir çalışır
   push:
     branches: [ main ]
   workflow_dispatch:
@@ -12,25 +12,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📂 Depoyu Kontrol Et
+      - name: Depoyu Kontrol Et
         uses: actions/checkout@v3
 
-      - name: 🐍 Python Sistemini Hazırla
-        # HATA BURADAYDI: Başına 'actions/' eklendi
+      - name: Python Kur
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
-      - name: 📦 Gerekli Araçları Kur
+      - name: Kutuphaneleri Kur
         run: pip install requests
 
-      - name: 🏹 Avcıyı Sahaya Gönder
+      - name: Avciyi Calistir
         run: python avci.py
 
-      - name: 🏆 Ganimetleri Kaydet
+      - name: Degisiklikleri Kaydet
         run: |
           git config --global user.name 'Avci-Bot'
           git config --global user.email 'avci@bot.com'
           git add avci_listesi.m3u
-          git commit -m "🦅 Ganimetler Güncellendi: $(date +'%d-%m-%Y %H:%M')" || echo "Yeni ganimet yok."
+          git commit -m "Ganimetler guncellendi: $(date +'%d-%m-%Y %H:%M')" || echo "Degisiklik yok"
           git push
