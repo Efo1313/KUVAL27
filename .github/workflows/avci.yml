@@ -2,18 +2,24 @@ name: Avci Otomasyonu
 
 on:
   schedule:
-    - cron: '0 */6 * * *' # 6 saatte bir çalışır
+    - cron: '0 */6 * * *' # Her 6 saatte bir otomatik çalışır
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [ main ]    # Sen dosya yüklediğinde çalışır
+  workflow_dispatch:      # Manuel 'Çalıştır' butonu ekler
 
 jobs:
   av-zamani:
     runs-on: ubuntu-latest
+    
+    # Yazma izni verilmesi (Hata almamak için önemli)
+    permissions:
+      contents: write
 
     steps:
       - name: Depoyu Kontrol Et
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Tüm geçmişi çekerek çakışmayı önler
 
       - name: Python Kur
         uses: actions/setup-python@v4
@@ -26,10 +32,13 @@ jobs:
       - name: Avciyi Calistir
         run: python avci.py
 
-      - name: Degisiklikleri Kaydet
+      - name: Degisiklikleri Kaydet ve Pushla
         run: |
           git config --global user.name 'Avci-Bot'
           git config --global user.email 'avci@bot.com'
+          # Çakışmaları önlemek için önce uzak depoyu çekiyoruz
+          git pull origin main --rebase
           git add avci_listesi.m3u
+          # Eğer değişiklik varsa commit yap, yoksa hata verme
           git commit -m "Ganimetler guncellendi: $(date +'%d-%m-%Y %H:%M')" || echo "Degisiklik yok"
-          git push
+          git push origin main
