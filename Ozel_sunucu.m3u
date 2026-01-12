@@ -33,6 +33,8 @@ http://5.178.103.239:82/yt1/s/NatGeoAnimals.m3u8
 http://5.178.103.239:82/yt1/s/RomanticBallads.m3u8
 #EXTINF:-1,Samurai
 http://5.178.103.239:82/yt1/s/Samurai.m3u8
+#EXTINF:-1,Twirlywoos
+http://5.178.103.239:82/yt1/s/Twirlywoos.m3u8
 #EXTINF:-1,Afrilayaban
 http://5.178.103.239:82/yt1/s/afrilayaban.m3u8
 #EXTINF:-1,Ahaber
@@ -127,8 +129,6 @@ http://5.178.103.239:82/yt1/s/kemalsunal3.m3u8
 http://5.178.103.239:82/yt1/s/kenya.m3u8
 #EXTINF:-1,Korku
 http://5.178.103.239:82/yt1/s/korku.m3u8
-#EXTINF:-1,Kosem
-http://5.178.103.239:82/yt1/s/kosem.m3u8
 #EXTINF:-1,Kralsakir
 http://5.178.103.239:82/yt1/s/kralsakir.m3u8
 #EXTINF:-1,Krttv
@@ -141,14 +141,10 @@ http://5.178.103.239:82/yt1/s/kukulli.m3u8
 http://5.178.103.239:82/yt1/s/kurulusosman.m3u8
 #EXTINF:-1,Leylamecnun
 http://5.178.103.239:82/yt1/s/leylamecnun.m3u8
-#EXTINF:-1,Medcezir
-http://5.178.103.239:82/yt1/s/medcezir.m3u8
 #EXTINF:-1,Mehmed
 http://5.178.103.239:82/yt1/s/mehmed.m3u8
 #EXTINF:-1,Mrbean
 http://5.178.103.239:82/yt1/s/mrbean.m3u8
-#EXTINF:-1,Muhtesemyuzyil
-http://5.178.103.239:82/yt1/s/muhtesemyuzyil.m3u8
 #EXTINF:-1,Naturelturkce
 http://5.178.103.239:82/yt1/s/naturelturkce.m3u8
 #EXTINF:-1,Neselidunyam
@@ -171,8 +167,6 @@ http://5.178.103.239:82/yt1/s/selena.m3u8
 http://5.178.103.239:82/yt1/s/sinco.m3u8
 #EXTINF:-1,Sozcutv
 http://5.178.103.239:82/yt1/s/sozcutv.m3u8
-#EXTINF:-1,Taffilm
-http://5.178.103.239:82/yt1/s/taffilm.m3u8
 #EXTINF:-1,Taytv
 http://5.178.103.239:82/yt1/s/taytv.m3u8
 #EXTINF:-1,Tgrtbelgesel
@@ -185,8 +179,6 @@ http://5.178.103.239:82/yt1/s/tjk.m3u8
 http://5.178.103.239:82/yt1/s/tlcsuc.m3u8
 #EXTINF:-1,Tolgashow
 http://5.178.103.239:82/yt1/s/tolgashow.m3u8
-#EXTINF:-1,Tomjerry
-http://5.178.103.239:82/yt1/s/tomjerry.m3u8
 #EXTINF:-1,Tomjery
 http://5.178.103.239:82/yt1/s/tomjery.m3u8
 #EXTINF:-1,Topfunny
