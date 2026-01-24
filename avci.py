@@ -18,35 +18,36 @@ KANALLAR = [
 
 def avla():
     ganimetler = []
-    # User-Agent eklemek sunucunun sizi engelleme ihtimalini düşürür
-    headers = {'User-Agent': 'Mozilla/5.0'}
+    # User-Agent: Bazı sunucular botları engellediği için tarayıcı taklidi yapıyoruz
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
+    }
     
     print("🦅 Avcı taramaya başladı...")
 
     for sunucu in SUNUCULAR:
-        # Sunucu adresinin sonunda '/' olduğundan emin olalım
         base_url = sunucu if sunucu.endswith('/') else sunucu + '/'
         
         for kanal in KANALLAR:
             url = f"{base_url}{kanal}/index.m3u8"
             try:
-                # Sadece başlık bilgisini çekerek trafiği azaltıyoruz (head)
-                r = requests.head(url, headers=headers, timeout=3, allow_redirects=True)
+                # Sadece başlığı kontrol et, timeout'u 5 saniye yaparak daha güvenli hale getir
+                r = requests.head(url, headers=headers, timeout=5, allow_redirects=True)
                 
                 if r.status_code == 200:
                     temiz_isim = kanal.replace("_TR", "").upper()
                     ganimetler.append(f"#EXTINF:-1, {temiz_isim}\n{url}")
-                    print(f"🎯 Bulundu: {temiz_isim} ({sunucu})")
-            except requests.exceptions.RequestException:
+                    print(f"🎯 Bulundu: {temiz_isim}")
+            except Exception:
                 continue
 
-    # Dosyayı kaydet
+    # Listeyi oluştur
     if ganimetler:
         with open("avci_listesi.m3u", "w", encoding="utf-8") as f:
             f.write("#EXTM3U\n" + "\n".join(ganimetler))
-        print(f"\n✅ İşlem tamamlandı. {len(ganimetler)} kanal 'avci_listesi.m3u' dosyasına kaydedildi.")
+        print(f"✅ İşlem tamamlandı. {len(ganimetler)} kanal kaydedildi.")
     else:
-        print("\n❌ Hiç aktif kanal bulunamadı.")
+        print("⚠️ Hiç canlı yayın bulunamadı.")
 
 if __name__ == "__main__":
     avla()
