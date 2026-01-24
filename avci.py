@@ -6,7 +6,7 @@ SUNUCULAR = [
     "http://116.202.238.88/"
 ]
 
-# GENİŞLETİLMİŞ TÜRK KANALLARI VE DİĞERLERİ
+# KANALLAR
 KANALLAR = [
     "TRT1_TR", "SHOWTV_TR", "ATV_TR", "TV8_TR", "FOXTV_TR", "NOW_TR", 
     "STAR_TR", "KANALD_TR", "TV8.5_TR", "TRTHABER_TR", "HABERTURK_TR", 
@@ -18,26 +18,35 @@ KANALLAR = [
 
 def avla():
     ganimetler = []
-    print("🦅 Avci taramaya basladi...")
+    # User-Agent eklemek sunucunun sizi engelleme ihtimalini düşürür
+    headers = {'User-Agent': 'Mozilla/5.0'}
+    
+    print("🦅 Avcı taramaya başladı...")
 
     for sunucu in SUNUCULAR:
+        # Sunucu adresinin sonunda '/' olduğundan emin olalım
+        base_url = sunucu if sunucu.endswith('/') else sunucu + '/'
+        
         for kanal in KANALLAR:
-            url = f"{sunucu}{kanal}/index.m3u8"
+            url = f"{base_url}{kanal}/index.m3u8"
             try:
-                r = requests.head(url, timeout=3, allow_redirects=True)
+                # Sadece başlık bilgisini çekerek trafiği azaltıyoruz (head)
+                r = requests.head(url, headers=headers, timeout=3, allow_redirects=True)
+                
                 if r.status_code == 200:
-                    # İsim temizleme: _TR'yi kaldır ve büyük harf yap
                     temiz_isim = kanal.replace("_TR", "").upper()
                     ganimetler.append(f"#EXTINF:-1, {temiz_isim}\n{url}")
-                    print(f"🎯 Bulundu: {temiz_isim}")
-            except:
+                    print(f"🎯 Bulundu: {temiz_isim} ({sunucu})")
+            except requests.exceptions.RequestException:
                 continue
 
-    # Listeyi oluştur
-    with open("avci_listesi.m3u", "w", encoding="utf-8") as f:
-        f.write("#EXTM3U\n" + "\n".join(ganimetler))
-    
-    print(f"✅ Islem tamamlandi. {len(ganimetler)} kanal kaydedildi.")
+    # Dosyayı kaydet
+    if ganimetler:
+        with open("avci_listesi.m3u", "w", encoding="utf-8") as f:
+            f.write("#EXTM3U\n" + "\n".join(ganimetler))
+        print(f"\n✅ İşlem tamamlandı. {len(ganimetler)} kanal 'avci_listesi.m3u' dosyasına kaydedildi.")
+    else:
+        print("\n❌ Hiç aktif kanal bulunamadı.")
 
 if __name__ == "__main__":
     avla()
