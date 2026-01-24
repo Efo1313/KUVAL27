@@ -28,7 +28,7 @@ jobs:
         run: pip install requests
 
       - name: Avciyi Calistir
-        run: python Avci.py
+        run: python avci.py
 
       - name: Degisiklikleri Kaydet ve Pushla
         run: |
