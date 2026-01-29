@@ -1,29 +1,31 @@
-name: Linkleri Guncelle
-
+name: Günlük Link Güncelleyici
 on:
-  workflow_dispatch:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '0 * * * *' # Her saat başı çalışır
+  workflow_dispatch: # Manuel çalıştırma butonu ekler
 
 jobs:
-  guncelleme:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - name: Depoyu çek
+        uses: actions/checkout@v3
+      
+      - name: Python kur
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
-      - run: pip install requests
-      - name: Botlari Calistir
+          python-version: '3.x'
+          
+      - name: Kütüphaneleri yükle
+        run: pip install requests
+        
+      - name: Scripti çalıştır
+        run: python update_link.py
+        
+      - name: Değişiklikleri kaydet
         run: |
-          python bot.py
-          python tarayici.py
-      - name: Kaydet ve Yukle
-        run: |
-          git config --global user.name 'GitHub Bot'
-          git config --global user.email 'bot@github.com'
-          git add .
-          git commit -m "Otomatik Guncelleme" || exit 0
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add atv_listesi.m3u
+          git commit -m "Otomatik link güncellemesi" || exit 0
           git push
