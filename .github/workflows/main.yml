@@ -2,13 +2,15 @@ name: IPTV Otomatik Guncelleyici
 
 on:
   schedule:
-    # Her saatin basında çalışır
-    - cron: '0 * * * *'
-  workflow_dispatch: # Elle tetikleme butonu
+    - cron: '0 * * * *' # Her saat başı
+  workflow_dispatch: # Manuel çalıştırma
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # GitHub'a dosyayı geri kaydetmesi için zorunlu izin
+      
     steps:
     - name: Depoyu cek
       uses: actions/checkout@v3
@@ -27,8 +29,15 @@ jobs:
 
     - name: Degisiklikleri Kaydet
       run: |
-        git config --local user.email "actions@github.com"
-        git config --local user.name "GitHub Actions"
-        git add listem.m3u
-        git commit -m "Saatlik Guncelleme: $(date)" || exit 0
-        git push
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        
+        # Dosya oluştuysa takip listesine ekle
+        if [ -f listem.m3u ]; then
+          git add listem.m3u
+          # Değişiklik yoksa hata vermeden bitir
+          git diff --staged --quiet || (git commit -m "Saatlik Guncelleme: $(date)" && git push)
+        else
+          echo "Hata: listem.m3u dosyası Python tarafından oluşturulamadı!"
+          exit 1
+        fi
