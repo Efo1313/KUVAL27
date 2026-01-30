@@ -4,44 +4,65 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 import json
 import time
-import os
 
-# 1. Tarayıcı Ayarları
-chrome_options = Options()
-chrome_options.add_argument("--headless")
-chrome_options.set_capability('goog:loggingPrefs', {'performance': 'ALL'})
+def link_yakala_ve_kaydet():
+    # 1. Tarayıcı Ayarları (Arka planda gizli çalışır)
+    chrome_options = Options()
+    chrome_options.add_argument("--headless") 
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.set_capability('goog:loggingPrefs', {'performance': 'ALL'})
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    # 2. Chrome Driver'ı Otomatik Kur ve Başlat
+    print("Sistem hazırlanıyor, lütfen bekleyin...")
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=chrome_options)
 
-url = "https://tr.mobiltv.net/trt-belgesel"
-print(f"{url} adresi taranıyor...")
-driver.get(url)
+    try:
+        # 3. Hedef Siteye Git
+        url = "https://tr.mobiltv.net/trt-belgesel"
+        print(f"Bağlanılıyor: {url}")
+        driver.get(url)
 
-time.sleep(10) # Linkin oluşması için bekleme
+        # Videonun yüklenmesi ve token oluşması için bekleme süresi
+        print("Kanal linki yakalanıyor (15 saniye bekleyiniz)...")
+        time.sleep(15)
 
-logs = driver.get_log('performance')
-found_links = []
+        # 4. Ağ Trafiğini (Network Logs) İncele
+        logs = driver.get_log('performance')
+        found_links = []
 
-for entry in logs:
-    log = json.loads(entry['message'])['message']
-    if 'Network.request' in log['method']:
-        request_url = log['params'].get('request', {}).get('url', '')
-        if '.m3u8' in request_url and 'tkn=' in request_url:
-            found_links.append(request_url)
+        for entry in logs:
+            log = json.loads(entry['message'])['message']
+            if 'Network.request' in log['method']:
+                request_url = log['params'].get('request', {}).get('url', '')
+                # M3U8 uzantılı ve içinde güvenlik tokeni olan linki filtrele
+                if '.m3u8' in request_url and 'tkn=' in request_url:
+                    found_links.append(request_url)
 
-driver.quit()
+        # 5. M3U Dosyası Oluşturma
+        if found_links:
+            # En güncel ve benzersiz linki al
+            final_link = list(set(found_links))[0]
+            
+            m3u_dosya_icerigi = f"#EXTM3U\n#EXTINF:-1,TRT Belgesel (Otomatik)\n{final_link}\n"
+            
+            with open("listem.m3u", "w", encoding="utf-8") as f:
+                f.write(m3u_dosya_icerigi)
+            
+            print("\n" + "="*30)
+            print("✅ BAŞARILI!")
+            print(f"Dosya Adı: listem.m3u")
+            print(f"Yeni Link: {final_link[:50]}...") # Linkin başını göster
+            print("="*30)
+        else:
+            print("\n❌ HATA: Link yakalanamadı. Site link yapısını değiştirmiş olabilir veya internet yavaş kalmış olabilir.")
 
-# --- M3U DOSYASINA YAZMA BÖLÜMÜ ---
-if found_links:
-    # Set kullanarak sadece benzersiz ve en güncel linki alıyoruz
-    final_link = list(set(found_links))[0] 
+    except Exception as e:
+        print(f"\nBir hata oluştu: {e}")
     
-    m3u_content = f"#EXTM3U\n#EXTINF:-1,TRT Belgesel (Otomatik Güncel)\n{final_link}\n"
-    
-    with open("listem.m3u", "w", encoding="utf-8") as f:
-        f.write(m3u_content)
-        
-    print("\n✅ Link başarıyla yakalandı ve 'listem.m3u' dosyasına kaydedildi!")
-    print(f"Güncel Link: {final_link}")
-else:
-    print("❌ Maalesef link bulunamadı.")
+    finally:
+        driver.quit()
+
+if __name__ == "__main__":
+    link_yakala_ve_kaydet()
