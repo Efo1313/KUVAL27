@@ -3,58 +3,63 @@ import re
 import os
 
 def get_atv_link():
-    # Daha güçlü bir tarayıcı taklidi
+    # Chrome tarayıcıyı birebir taklit eden session
     scraper = cloudscraper.create_scraper(
         browser={'browser': 'chrome', 'platform': 'windows', 'mobile': False}
     )
     
-    # Kaynak listesini genişlettik ve daha stabil olanları başa aldık
-    urls = [
-        "https://www.canlitv.me/atv-canli-izle-1",
-        "https://m.canlitv.direct/atv-canli-yayin-izle",
-        "https://canlitv.center/atv-canli-yayin"
+    # Daha geniş ve güncel kaynak havuzu
+    sources = [
+        "https://canlitv.center/atv-canli-yayin",
+        "https://www.canlitv.vin/atv-izle",
+        "https://m.canlitv.me/atv-canli-izle-1",
+        "https://www.canlitv.today/atv-canli-yayin-izle-1"
     ]
     
-    # Daha agresif bir Regex: tırnak içindeki her türlü m3u8 yapısını yakalar
-    pattern = r'["\'](https?[:\\]+[^"\']+\.m3u8[^"\']*)["\']'
+    # Regex: Hem standart hem de şifrelenmiş olabilecek m3u8 linklerini yakalar
+    # (Token içeren dinamik linkleri önceliklendirir)
+    m3u8_pattern = r'["\'](https?[:\\]+[^"\']+\.m3u8[^"\']*)["\']'
 
-    print("--- ATV Link Avcısı Başlatıldı ---")
+    print("--- ATV Canlı Yayın Avı Başlatıldı ---")
 
-    for url in urls:
+    for url in sources:
         try:
-            print(f"Kaynak taranıyor: {url}")
-            response = scraper.get(url, timeout=20)
+            # Her site için özel referer göndererek güvenliği aşmayı dene
+            headers = {"Referer": url}
+            print(f"Sorgulanıyor: {url}")
+            response = scraper.get(url, headers=headers, timeout=15)
             
             if response.status_code == 200:
-                # Tüm eşleşmeleri bul
-                matches = re.findall(pattern, response.text)
+                html_content = response.text
+                matches = re.findall(m3u8_pattern, html_content)
+                
                 for link in matches:
-                    # Kaçış karakterlerini (\/) temizle
                     clean_link = link.replace('\\/', '/')
                     
-                    # Filtreleme: İçinde 'atv' geçmeli ve reklam linki olmamalı
+                    # Filtreleme kriterleri:
+                    # 1. İçinde 'atv' geçmeli
+                    # 2. Sadece 'daioncdn' olup tokensiz olan (yani senin çalışmayan linkin) olmamalı
                     if "atv" in clean_link.lower() and "m3u8" in clean_link:
-                        # Eğer link 'daioncdn' içeriyorsa ama sonunda token yoksa geçebiliriz
-                        # Çünkü o zaten senin yedek linkinle aynı kapıya çıkar
                         if "daioncdn" in clean_link and "?" not in clean_link:
-                            continue
-                            
-                        print(f"🎯 Hedef bulundu: {clean_link[:50]}...")
+                            continue # Bu link muhtemelen çalışmayan ham linktir, atla.
+                        
+                        print(f"🎯 Aktif Link Yakalandı: {clean_link}")
                         return clean_link
         except Exception as e:
-            print(f"⚠️ {url} adresinde hata: {e}")
             continue
             
     return None
 
 # Yazma işlemi
 new_link = get_atv_link()
-with open("atv_listesi.m3u", "w", encoding="utf-8") as f:
+file_path = "atv_listesi.m3u"
+
+with open(file_path, "w", encoding="utf-8") as f:
     f.write("#EXTM3U\n")
     if new_link:
         f.write(f"#EXTINF:-1,ATV Canli (Guncel)\n{new_link}")
-        print("✅ Liste güncel link ile yenilendi.")
+        print("✅ Başarıyla güncellendi.")
     else:
-        # Link bulunamazsa eski linki değil, en azından sabit kaynağı bırak
+        # Link bulunamazsa, en azından bir ihtimal çalışabilecek resmi web parametresini ekle
         f.write("#EXTINF:-1,ATV (Yedek - Kaynak Bulunamadi)\nhttps://atv-live.daioncdn.net/atv/atv.m3u8")
-        print("❌ Hiçbir kaynaktan link çekilemedi, yedek yazıldı.")
+        print("❌ Kaynaklar korumalı, manuel müdahale gerekebilir.")
