@@ -1,44 +1,39 @@
-import requests
+import cloudscraper
+import re
 
-def get_channel_link(search_term):
-    # Dünya çapındaki güvenilir ve güncel m3u havuzları
-    sources = [
-        "https://iptv-org.github.io/iptv/countries/tr.m3u",
-        "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/tr.m3u"
-    ]
+def get_vin_link(slug):
+    scraper = cloudscraper.create_scraper()
+    # Sitenin yayın sayfası
+    url = f"https://www.canlitv.vin/{slug}"
     
-    headers = {"User-Agent": "Mozilla/5.0"}
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "Referer": "https://www.canlitv.vin/"
+    }
 
-    for url in sources:
-        try:
-            res = requests.get(url, headers=headers, timeout=10)
-            if res.status_code == 200:
-                lines = res.text.split('\n')
-                for i, line in enumerate(lines):
-                    # Tam eşleşme arıyoruz (Örn: "ATV" veya "A2")
-                    if "#EXTINF" in line and search_term.upper() in line.upper():
-                        # Bir sonraki satırdaki linki al
-                        link = lines[i+1].strip()
-                        if link.startswith("http") and ".m3u8" in link:
-                            # Yanlış eşleşmeyi önlemek için ikincil kontrol
-                            if search_term.lower() in link.lower() or search_term.lower() in line.lower():
-                                return link
-        except:
-            continue
+    try:
+        print(f"Kaynak taranıyor: {url}")
+        response = scraper.get(url, headers=headers, timeout=15)
+        
+        # HTML içinde m3u8?tkn= ile başlayan linki ara
+        match = re.search(r'["\'](https?://[^"\']+\.m3u8\?tkn=[^"\']+)["\']', response.text)
+        if match:
+            link = match.group(1).replace('\\/', '/')
+            return link
+    except Exception as e:
+        print(f"Hata oluştu: {e}")
     return None
 
-# Kanal linklerini ayrı ayrı çek
-atv_url = get_channel_link("ATV")
-a2_url = get_channel_link("A2")
-
-# Eğer havuzda bulunamazsa, Bulgaristan'dan çalışan alternatifleri tanımla
-if not atv_url: atv_url = "https://nhvnetv.com/p/atv.m3u8"
-if not a2_url: a2_url = "https://nhvnetv.com/p/a2tv.m3u8"
+# Kanalları al
+atv_link = get_vin_link("atv-izle")
+a2_link = get_vin_link("a2-tv-izle")
 
 # M3U Dosyasını oluştur
 with open("atv_listesi.m3u", "w", encoding="utf-8") as f:
     f.write("#EXTM3U\n")
-    f.write(f"#EXTINF:-1,ATV Canli\n{atv_url}\n")
-    f.write(f"#EXTINF:-1,A2 TV Canli\n{a2_url}\n")
+    if atv_link:
+        f.write(f"#EXTINF:-1,ATV Canli\n{atv_link}\n")
+    if a2_link:
+        f.write(f"#EXTINF:-1,A2 TV Canli\n{a2_link}\n")
 
-print(f"Güncelleme Bitti!\nATV: {atv_url}\nA2: {a2_url}")
+print(f"İşlem tamam! Yeni ATV linki: {atv_link}")
