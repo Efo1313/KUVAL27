@@ -1,54 +1,39 @@
 import cloudscraper
 import re
 
-def scrape_deep(kanal_slug):
-    # Sitenin korumasını geçmek için tarayıcıyı taklit et
+def link_avcisi(kanal_slug):
     scraper = cloudscraper.create_scraper()
-    
-    # Doğrudan yayın motorunun olduğu sayfayı hedef al
-    base_urls = [
-        f"https://m.canlitv.direct/yayin.php?kanal={kanal_slug}",
-        f"https://m.canlitv.direct/{kanal_slug}"
+    # Farklı kaynakları aynı anda tara
+    kaynaklar = [
+        f"https://m.canlitv.direct/{kanal_slug}",
+        f"https://www.canlitv.vin/{kanal_slug.replace('canli-yayin-izle', 'izle')}",
+        f"https://canlitvizle.com/{kanal_slug}"
     ]
     
-    headers = {
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15",
-        "Referer": "https://m.canlitv.direct/"
-    }
+    headers = {"Referer": "https://google.com"}
 
-    for url in base_urls:
+    for url in kaynaklar:
         try:
-            print(f"Denetleniyor: {url}")
-            res = scraper.get(url, headers=headers, timeout=15)
-            # Linkler bazen 'source: "..." ' veya 'file: "..." ' içinde gizlidir
-            # Kaçış karakterli (slashed) m3u8'leri yakala
+            print(f"Aranıyor: {url}")
+            res = scraper.get(url, headers=headers, timeout=10)
+            # m3u8 linkini ve beraberindeki tokeni yakala
             match = re.search(r'["\'](https?[:\\]+[^"\']+\.m3u8[^"\']*)["\']', res.text)
             if match:
-                link = match.group(1).replace('\\/', '/')
-                if "atv" in link.lower() or "a2tv" in link.lower():
-                    return link
+                return match.group(1).replace('\\/', '/')
         except:
             continue
     return None
 
-# Kanal isimlerini sitenin kullandığı slug yapısına göre çek
-atv_link = scrape_deep("atvcanli-yayin-izle")
-a2_link = scrape_deep("a2-tv-canli-izle")
+# Kanalları tara
+atv = link_avcisi("atvcanli-yayin-izle")
+a2 = link_avcisi("a2-tv-canli-izle")
 
-# M3U Dosyasını oluştur
+# Sonucu ekrana bas ve dosyaya yaz
 with open("atv_listesi.m3u", "w", encoding="utf-8") as f:
     f.write("#EXTM3U\n")
-    
-    # ATV
-    if atv_link:
-        f.write(f"#EXTINF:-1,ATV Canli (Guncel)\n{atv_link}\n")
-    else:
-        f.write("#EXTINF:-1,ATV (Yedek)\nhttps://atv-live.daioncdn.net/atv/atv.m3u8\n")
-        
-    # A2 TV
-    if a2_link:
-        f.write(f"#EXTINF:-1,A2 TV Canli (Guncel)\n{a2_link}\n")
-    else:
-        f.write("#EXTINF:-1,A2 TV (Yedek)\nhttps://trkvz-live.daioncdn.net/a2tv/a2tv.m3u8\n")
+    f.write(f"#EXTINF:-1,ATV Canli\n{atv if atv else 'Bulunamadi'}\n")
+    f.write(f"#EXTINF:-1,A2 TV Canli\n{a2 if a2 else 'Bulunamadi'}\n")
 
-print("İşlem tamamlandı, dosyayı kontrol et.")
+print("\n--- İŞLEM TAMAM ---")
+print(f"ATV: {atv}")
+print(f"A2: {a2}")
