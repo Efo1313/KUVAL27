@@ -11,13 +11,13 @@ def get_channel_link(search_term):
 
     for url in sources:
         try:
-            print(f"Havuz kontrol ediliyor: {url}")
             res = requests.get(url, headers=headers, timeout=10)
             if res.status_code == 200:
                 lines = res.text.split('\n')
                 for i, line in enumerate(lines):
                     # Tam eşleşme arıyoruz (Örn: "ATV" veya "A2")
                     if "#EXTINF" in line and search_term.upper() in line.upper():
+                        # Bir sonraki satırdaki linki al
                         link = lines[i+1].strip()
                         if link.startswith("http") and ".m3u8" in link:
                             # Yanlış eşleşmeyi önlemek için ikincil kontrol
