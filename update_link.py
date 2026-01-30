@@ -1,26 +1,44 @@
-import cloudscraper
-import re
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+import json
+import time
 
-def get_link(slug):
-    scraper = cloudscraper.create_scraper()
-    url = f"https://www.canlitv.tel/{slug}"
-    headers = {"User-Agent": "Mozilla/5.0", "Referer": "https://www.canlitv.tel/"}
-    try:
-        res = scraper.get(url, headers=headers, timeout=15)
-        # m3u8?hash= desenini yakalar
-        match = re.search(r'["\'](https?://[^"\']+\.m3u8\?hash=[^"\']+)["\']', res.text)
-        if match:
-            return match.group(1).replace('\\/', '/')
-    except:
-        return None
-    return None
+# 1. Tarayıcı Ayarları
+chrome_options = Options()
+chrome_options.add_argument("--headless")  # Ekran açılmadan arka planda çalışır
+chrome_options.set_capability('goog:loggingPrefs', {'performance': 'ALL'})
 
-atv = get_link("atv-canli")
-a2 = get_link("a2-tv-canli-izle")
+# 2. Driver'ı Başlat
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 
-with open("atv_listesi.m3u", "w", encoding="utf-8") as f:
-    f.write("#EXTM3U\n")
-    f.write(f"#EXTINF:-1,ATV Canli\n{atv if atv else 'https://atv-live.daioncdn.net/atv/atv.m3u8'}\n")
-    f.write(f"#EXTINF:-1,A2 TV Canli\n{a2 if a2 else 'https://trkvz-live.daioncdn.net/a2tv/a2tv.m3u8'}\n")
+# 3. Hedef Siteye Git
+url = "https://tr.mobiltv.net/trt-belgesel"
+print(f"{url} adresi taranıyor...")
+driver.get(url)
 
-print(f"ATV: {atv}\nA2: {a2}")
+# Sayfanın ve videonun yüklenmesi için 10 saniye bekle
+time.sleep(10)
+
+# 4. Ağ Loglarını İncele
+logs = driver.get_log('performance')
+
+found_links = []
+for entry in logs:
+    log = json.loads(entry['message'])['message']
+    if 'Network.request' in log['method']:
+        request_url = log['params'].get('request', {}).get('url', '')
+        # İçinde .m3u8 geçen ve token içeren linki yakala
+        if '.m3u8' in request_url and 'tkn=' in request_url:
+            found_links.append(request_url)
+
+# 5. Sonuçları Yazdır
+if found_links:
+    print("\n--- Başarıyla Yakalanan Linkler ---")
+    for link in set(found_links): # set() ile tekrar edenleri temizle
+        print(link)
+else:
+    print("Maalesef link bulunamadı. Bekleme süresini artırmayı deneyin.")
+
+driver.quit()
