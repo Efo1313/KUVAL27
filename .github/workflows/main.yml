@@ -1,34 +1,34 @@
-name: Günlük Link Güncelleyici
+name: IPTV Otomatik Guncelleyici
 
 on:
   schedule:
-    - cron: '0 * * * *' # Her saat başı çalışır
-  workflow_dispatch: # Manuel çalıştırma butonu
+    # Her saatin basında çalışır
+    - cron: '0 * * * *'
+  workflow_dispatch: # Elle tetikleme butonu
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Depoyu çek
-        uses: actions/checkout@v3
-      
-      - name: Python kur
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-          
-      - name: Kütüphaneleri yükle
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests cloudscraper
-        
-      - name: Scripti çalıştır
-        run: python update_link.py
-        
-      - name: Değişiklikleri kaydet
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add atv_listesi.m3u
-          git commit -m "Otomatik link güncellemesi: $(date)" || exit 0
-          git push
+    - name: Depoyu cek
+      uses: actions/checkout@v3
+
+    - name: Python Kur
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Bagimliliklari Yukle
+      run: |
+        pip install selenium webdriver-manager
+
+    - name: Scripti Calistir
+      run: python update_link.py
+
+    - name: Degisiklikleri Kaydet
+      run: |
+        git config --local user.email "actions@github.com"
+        git config --local user.name "GitHub Actions"
+        git add listem.m3u
+        git commit -m "Saatlik Guncelleme: $(date)" || exit 0
+        git push
