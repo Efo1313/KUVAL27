@@ -1,20 +1,4 @@
 #EXTM3U
-#EXTINF:-1, BBC
-http://65.108.239.207/bbc/index.m3u8
-#EXTINF:-1, BOX1
-http://65.108.239.207/box1/index.m3u8
-#EXTINF:-1, BOX2
-http://65.108.239.207/box2/index.m3u8
-#EXTINF:-1, BOX3
-http://65.108.239.207/box3/index.m3u8
-#EXTINF:-1, BSSTARS
-http://65.108.239.207/bsstars/index.m3u8
-#EXTINF:-1, BSACTION1
-http://65.108.239.207/bsaction1/index.m3u8
-#EXTINF:-1, BSPREMIER1
-http://65.108.239.207/bspremier1/index.m3u8
-#EXTINF:-1, DISCOVERY
-http://65.108.239.207/discovery/index.m3u8
 #EXTINF:-1, TRT1
 http://116.202.238.88/TRT1_TR/index.m3u8
 #EXTINF:-1, SHOWTV
@@ -29,6 +13,8 @@ http://116.202.238.88/FOXTV_TR/index.m3u8
 http://116.202.238.88/KANALD_TR/index.m3u8
 #EXTINF:-1, TV8.5
 http://116.202.238.88/TV8.5_TR/index.m3u8
+#EXTINF:-1, TRTHABER
+http://116.202.238.88/TRTHABER_TR/index.m3u8
 #EXTINF:-1, HABERTURK
 http://116.202.238.88/HABERTURK_TR/index.m3u8
 #EXTINF:-1, CNNTURK
