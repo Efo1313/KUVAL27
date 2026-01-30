@@ -1,59 +1,40 @@
-import requests
-import re
 import cloudscraper
+import re
 
-def get_atv_from_site():
-    # Sitenin bot korumasını aşmak için cloudscraper kullanıyoruz
+def get_live_link(target_path):
     scraper = cloudscraper.create_scraper()
-    
-    # Senin verdiğin ana sayfa ve onun yayın yaptığı muhtemel alt yollar
-    urls = [
-        "https://m.canlitv.direct/atvcanli-yayin-izle",
-        "https://m.canlitv.direct/yayin.php?kanal=atvcanli-yayin-izle"
-    ]
-    
-    headers = {
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1",
-        "Referer": "https://m.canlitv.direct/"
-    }
+    # Sitenin mobil versiyonu genellikle daha kolay link verir
+    url = f"https://m.canlitv.direct/{target_path}"
+    headers = {"Referer": "https://m.canlitv.direct/"}
 
-    print("--- m.canlitv.direct Taraması Başlatıldı ---")
+    try:
+        print(f"Kaynak taranıyor: {url}")
+        response = scraper.get(url, headers=headers, timeout=15)
+        if response.status_code == 200:
+            # Sayfa içindeki gerçek m3u8'i (tokenlı haliyle) bul
+            match = re.search(r'["\'](https?[:\\]+[^"\']+\.m3u8[^"\']*)["\']', response.text)
+            if match:
+                return match.group(1).replace('\\/', '/')
+    except:
+        return None
+    return None
 
-    for url in urls:
-        try:
-            response = scraper.get(url, headers=headers, timeout=15)
-            if response.status_code == 200:
-                # 1. Adım: HTML içinde doğrudan m3u8 ara
-                # 2. Adım: Kaçış karakterli (\/) linkleri temizle
-                content = response.text
-                matches = re.findall(r'["\'](https?[:\\]+[^"\']+\.m3u8[^"\']*)["\']', content)
-                
-                for link in matches:
-                    clean_link = link.replace('\\/', '/')
-                    # Sadece atv içeren ve reklam olmayan linki seç
-                    if "atv" in clean_link.lower() and "m3u8" in clean_link:
-                        # Eğer link daioncdn ise genellikle token gerekir, 
-                        # ama site üzerinden alınan linkte bu token zaten ekli olur.
-                        print(f"✅ Link bulundu: {clean_link}")
-                        return clean_link
-        except Exception as e:
-            print(f"Hata: {e}")
-            continue
+# İki kanal için de linkleri çek
+atv_link = get_live_link("atvcanli-yayin-izle")
+a2_link = get_live_link("a2-tv-canli-izle")
 
-    # Eğer siteden çekemezse (Bulgaristan engeli varsa), global yedek mekanizmasını çalıştır
-    print("⚠️ Siteden çekilemedi, global havuzlara bakılıyor...")
-    backup_res = requests.get("https://iptv-org.github.io/iptv/countries/tr.m3u", timeout=10)
-    if backup_res.status_code == 200:
-        match = re.search(r'#EXTINF.*ATV.*\n(https?://.*\.m3u8.*)', backup_res.text, re.IGNORECASE)
-        if match:
-            return match.group(1).strip()
-
-    return "https://trkvz-live.ercdn.net/atv/atv.m3u8" # En son çare
-
-# Yazma işlemi
-new_link = get_atv_from_site()
+# M3U Dosyasını Oluştur
 with open("atv_listesi.m3u", "w", encoding="utf-8") as f:
     f.write("#EXTM3U\n")
-    f.write(f"#EXTINF:-1,ATV Canli\n{new_link}")
+    
+    if atv_link:
+        f.write(f"#EXTINF:-1,ATV Canli\n{atv_link}\n")
+    else:
+        f.write("#EXTINF:-1,ATV (Yedek)\nhttps://atv-live.daioncdn.net/atv/atv.m3u8\n")
+        
+    if a2_link:
+        f.write(f"#EXTINF:-1,A2 TV Canli\n{a2_link}\n")
+    else:
+        f.write(f"#EXTINF:-1,A2 TV (Yedek)\nhttps://trkvz-live.daioncdn.net/a2tv/a2tv.m3u8\n")
 
-print(f"İşlem Tamam. Kaydedilen link: {new_link}")
+print("Dosya başarıyla güncellendi!")
