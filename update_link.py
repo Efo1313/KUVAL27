@@ -4,41 +4,44 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 import json
 import time
+import os
 
 # 1. Tarayıcı Ayarları
 chrome_options = Options()
-chrome_options.add_argument("--headless")  # Ekran açılmadan arka planda çalışır
+chrome_options.add_argument("--headless")
 chrome_options.set_capability('goog:loggingPrefs', {'performance': 'ALL'})
 
-# 2. Driver'ı Başlat
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 
-# 3. Hedef Siteye Git
 url = "https://tr.mobiltv.net/trt-belgesel"
 print(f"{url} adresi taranıyor...")
 driver.get(url)
 
-# Sayfanın ve videonun yüklenmesi için 10 saniye bekle
-time.sleep(10)
+time.sleep(10) # Linkin oluşması için bekleme
 
-# 4. Ağ Loglarını İncele
 logs = driver.get_log('performance')
-
 found_links = []
+
 for entry in logs:
     log = json.loads(entry['message'])['message']
     if 'Network.request' in log['method']:
         request_url = log['params'].get('request', {}).get('url', '')
-        # İçinde .m3u8 geçen ve token içeren linki yakala
         if '.m3u8' in request_url and 'tkn=' in request_url:
             found_links.append(request_url)
 
-# 5. Sonuçları Yazdır
-if found_links:
-    print("\n--- Başarıyla Yakalanan Linkler ---")
-    for link in set(found_links): # set() ile tekrar edenleri temizle
-        print(link)
-else:
-    print("Maalesef link bulunamadı. Bekleme süresini artırmayı deneyin.")
-
 driver.quit()
+
+# --- M3U DOSYASINA YAZMA BÖLÜMÜ ---
+if found_links:
+    # Set kullanarak sadece benzersiz ve en güncel linki alıyoruz
+    final_link = list(set(found_links))[0] 
+    
+    m3u_content = f"#EXTM3U\n#EXTINF:-1,TRT Belgesel (Otomatik Güncel)\n{final_link}\n"
+    
+    with open("listem.m3u", "w", encoding="utf-8") as f:
+        f.write(m3u_content)
+        
+    print("\n✅ Link başarıyla yakalandı ve 'listem.m3u' dosyasına kaydedildi!")
+    print(f"Güncel Link: {final_link}")
+else:
+    print("❌ Maalesef link bulunamadı.")
