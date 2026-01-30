@@ -1,27 +1,25 @@
 import json
 import time
+import os
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 
 def link_yakala():
-    # GitHub Actions (Linux) uyumlu tarayıcı ayarları
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.set_capability('goog:loggingPrefs', {'performance': 'ALL'})
 
-    print("Tarayıcı başlatılıyor...")
     service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=chrome_options)
 
     try:
         url = "https://tr.mobiltv.net/trt-belgesel"
         driver.get(url)
-        print("Sayfa yüklendi, link aranıyor (15 sn)...")
-        time.sleep(15)
+        time.sleep(15) # Sayfanın yüklenmesi için süre
 
         logs = driver.get_log('performance')
         found_links = []
@@ -37,14 +35,15 @@ def link_yakala():
             final_link = list(set(found_links))[0]
             m3u_content = f"#EXTM3U\n#EXTINF:-1,TRT Belgesel (Otomatik)\n{final_link}\n"
             
+            # Dosyayı yazdır
             with open("listem.m3u", "w", encoding="utf-8") as f:
                 f.write(m3u_content)
-            print("✅ listem.m3u güncellendi.")
+            print("✅ listem.m3u başarıyla güncellendi.")
         else:
-            print("❌ Link bulunamadı.")
+            print("❌ M3U8 linki bulunamadı!")
 
     except Exception as e:
-        print(f"Hata: {e}")
+        print(f"Hata oluştu: {e}")
     finally:
         driver.quit()
 
