@@ -1,64 +1,66 @@
-import requests
+import cloudscraper
 import re
-import json
+import os
 
-def get_alternative_link():
-    print("--- ATV Canlı Yayın Linki Aranıyor ---")
+def get_atv_live_link():
+    # Cloudflare ve bot korumalarını aşmak için scraper oluştur
+    scraper = cloudscraper.create_scraper(
+        browser={
+            'browser': 'chrome',
+            'platform': 'windows',
+            'mobile': False
+        }
+    )
     
-    # Gerçekçi bir tarayıcı kimliği
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
-        "Referer": "https://m.canlitv.direct/",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,webkit/sdk;q=0.8"
-    }
-    
-    alternatives = [
-        "https://m.canlitv.direct/atv-canli-izle",
-        "https://m.canlitv.direct/yayin.php?kanal=atvcanli-yayin-izle",
-        "https://m.canlitv.direct/atvcanli-yayin-izle/2"
+    # En güncel çalışan alternatif sayfalar
+    urls = [
+        "https://m.canlitv.direct/atv-canli-yayin-izle",
+        "https://www.canlitv.me/atv-canli-izle-1",
+        "https://canlitv.center/atv-canli-yayin"
     ]
 
-    # m3u8 yakalamak için daha esnek bir Regex
-    # Hem tırnak içindeki linkleri hem de kaçış karakterli (slashed) linkleri yakalar
-    m3u8_pattern = r'["\'](https?[:\\]+[^"\']+\.m3u8[^"\']*)["\']'
+    # m3u8 yakalama paterni (Kaçış karakterlerini de kapsar)
+    pattern = r'(https?[:\\]+[^"\']+\.m3u8[^"\']*)'
 
-    for url in alternatives:
+    print("--- Canlı Yayın Linki Aranıyor ---")
+
+    for url in urls:
         try:
-            print(f"Denetleniyor: {url}")
-            response = requests.get(url, headers=headers, timeout=12)
-            response.raise_for_status() # 404 veya 500 hatası varsa geç
+            print(f"Sorgulanıyor: {url}")
+            response = scraper.get(url, timeout=15)
             
-            content = response.text
-            match = re.search(m3u8_pattern, content)
-            
-            if match:
-                raw_link = match.group(1)
-                # Kaçış karakterlerini temizle (örneğin: https:\/\/ -> https://)
-                clean_link = raw_link.replace('\\/', '/')
-                print(f"✅ Başarılı! Link bulundu.")
-                return clean_link
+            if response.status_code == 200:
+                # Sayfa içeriğindeki tüm m3u8 linklerini bul
+                matches = re.findall(pattern, response.text)
                 
+                for link in matches:
+                    # Linki temizle
+                    clean_link = link.replace('\\/', '/')
+                    
+                    # 'atv' kelimesi geçen ve 'daioncdn' barındıran linki önceliklendir
+                    if "atv" in clean_link.lower() and "m3u8" in clean_link:
+                        # Gereksiz tırnak veya karakter varsa temizle
+                        clean_link = clean_link.strip('\\"\'')
+                        print(f"✅ Başarılı! Aktif yayın bulundu.")
+                        return clean_link
         except Exception as e:
-            print(f"⚠️ Bağlantı hatası ({url}): {e}")
+            print(f"❌ Hata oluştu: {url} -> {e}")
             continue
-            
+
     return None
 
-# --- Ana Çalıştırma Kısmı ---
-new_link = get_alternative_link()
+# --- Dosyaya Yazma İşlemi ---
+new_link = get_atv_live_link()
+file_name = "atv_guncel.m3u"
 
-file_name = "atv_listesi.m3u"
-try:
-    with open(file_name, "w", encoding="utf-8") as f:
-        f.write("#EXTM3U\n")
-        if new_link:
-            f.write(f"#EXTINF:-1,ATV Canli (Guncel)\n{new_link}")
-            print(f"\nSonuç: {file_name} başarıyla güncellendi.")
-            print(f"Link: {new_link}")
-        else:
-            # Yedek link (Statik olduğu için her zaman çalışmayabilir)
-            fallback = "https://atv-live.daioncdn.net/atv/atv.m3u8"
-            f.write(f"#EXTINF:-1,ATV (Yedek - Token Gerekebilir)\n{fallback}")
-            print("\n❌ Aktif link bulunamadı, yedek adres yazıldı.")
-except IOError as e:
-    print(f"Dosya yazma hatası: {e}")
+with open(file_name, "w", encoding="utf-8") as f:
+    f.write("#EXTM3U\n")
+    if new_link:
+        f.write(f"#EXTINF:-1,ATV Canli (Guncel)\n{new_link}")
+        print(f"\nSonuç: {file_name} dosyası güncellendi.")
+        print(f"Bulunan Link: {new_link}")
+    else:
+        # Hiçbiri olmazsa son çare:
+        fallback = "https://atv-live.daioncdn.net/atv/atv.m3u8"
+        f.write(f"#EXTINF:-1,ATV (Yedek)\n{fallback}")
+        print("\n⚠️ Canlı link ayıklanamadı. Bot koruması çok güçlü olabilir.")
