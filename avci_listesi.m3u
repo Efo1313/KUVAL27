@@ -1,14 +1,8 @@
 #EXTM3U
 #EXTINF:-1, BBC
 http://65.108.239.207/bbc/index.m3u8
-#EXTINF:-1, BOX1
-http://65.108.239.207/box1/index.m3u8
-#EXTINF:-1, BOX2
-http://65.108.239.207/box2/index.m3u8
 #EXTINF:-1, BOX3
 http://65.108.239.207/box3/index.m3u8
-#EXTINF:-1, BSSTARS
-http://65.108.239.207/bsstars/index.m3u8
 #EXTINF:-1, BSACTION1
 http://65.108.239.207/bsaction1/index.m3u8
 #EXTINF:-1, BSPREMIER1
