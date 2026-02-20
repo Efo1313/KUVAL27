@@ -21,8 +21,6 @@ http://65.108.239.207/tarihtv/index.m3u8
 http://65.108.239.207/discovery/index.m3u8
 #EXTINF:-1, TRT1
 http://116.202.238.88/TRT1_TR/index.m3u8
-#EXTINF:-1, SHOWTV
-http://116.202.238.88/SHOWTV_TR/index.m3u8
 #EXTINF:-1, ATV
 http://116.202.238.88/ATV_TR/index.m3u8
 #EXTINF:-1, TV8
@@ -33,9 +31,5 @@ http://116.202.238.88/FOXTV_TR/index.m3u8
 http://116.202.238.88/KANALD_TR/index.m3u8
 #EXTINF:-1, TV8.5
 http://116.202.238.88/TV8.5_TR/index.m3u8
-#EXTINF:-1, TRTHABER
-http://116.202.238.88/TRTHABER_TR/index.m3u8
-#EXTINF:-1, HABERTURK
-http://116.202.238.88/HABERTURK_TR/index.m3u8
 #EXTINF:-1, CNNTURK
 http://116.202.238.88/CNNTURK_TR/index.m3u8
